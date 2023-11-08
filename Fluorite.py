@@ -48,31 +48,31 @@ for i in range(10000):
     m.ChangeDutyCycle(((i+66)*0.01)%50)
     p1.ChangeDutyCycle(100) #1000
     p2.ChangeDutyCycle(100) #1000
-    sleep(0.01)
+    sleep(0.02)
     pp1.ChangeDutyCycle(100) #1100
     pp2.ChangeDutyCycle(100) #1100
-    sleep(0.01)
+    sleep(0.02)
     p1.ChangeDutyCycle(0) #0100
     p2.ChangeDutyCycle(0) #0100
-    sleep(0.01)
+    sleep(0.02)
     ppp1.ChangeDutyCycle(100) #0110
     ppp2.ChangeDutyCycle(100) #0110
-    sleep(0.01)
+    sleep(0.02)
     pp1.ChangeDutyCycle(0) #0010
     pp2.ChangeDutyCycle(0) #0010
-    sleep(0.01)
+    sleep(0.02)
     pppp1.ChangeDutyCycle(100) #0011
     pppp2.ChangeDutyCycle(100) #0011
-    sleep(0.01)
+    sleep(0.02)
     ppp1.ChangeDutyCycle(0) #0001
     ppp2.ChangeDutyCycle(0) #0001
-    sleep(0.01)
+    sleep(0.02)
     p1.ChangeDutyCycle(100) #1001
     p2.ChangeDutyCycle(100) #1001
-    sleep(0.01)
+    sleep(0.02)
     pppp1.ChangeDutyCycle(0) #1000
     pppp2.ChangeDutyCycle(0) #1000
-    sleep(0.01)
+    sleep(0.02)
 
 p.stop()
 w.stop()
