@@ -43,9 +43,9 @@ ppp2.start(0)
 pppp2.start(0)
 #running the motors and changing the LEDs at the same time
 for i in range(10000):
-    p.ChangeDutyCycle(i%100)
-    w.ChangeDutyCycle((i+33)%100)
-    m.ChangeDutyCycle((i+33)%100)
+    p.ChangeDutyCycle(i%50)
+    w.ChangeDutyCycle((i+33)%50)
+    m.ChangeDutyCycle((i+66)%50)
     p1.ChangeDutyCycle(100) #1000
     p2.ChangeDutyCycle(100) #1000
     sleep(0.01)
