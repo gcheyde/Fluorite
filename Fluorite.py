@@ -2,15 +2,23 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 GPIO.setmode(GPIO.BCM)
-pins = [23,24,25] #LED pins
+pins = [23,24,25,8,7,12,26] #LED pins
 for i in pins:
     GPIO.setup(i, GPIO.OUT)
-p = GPIO.PWM(23,50) #setting up PWM
-w = GPIO.PWM(24,50)
-m = GPIO.PWM(25,50)
+p = GPIO.PWM(23,100) #setting up PWM
+w = GPIO.PWM(24,100)
+m = GPIO.PWM(25,100)
+pp = GPIO.PWM(8,100)
+ww = GPIO.PWM(7,100)
+mm = GPIO.PWM(12,100)
+ppp = GPIO.PWM(26,100)
 p.start(0)
 w.start(0)
 m.start(0)
+pp.start(0)
+ww.start(0)
+mm.start(0)
+ppp.start(0)
 #motor 1
 GPIO.setup(16,GPIO.OUT) #A1
 GPIO.setup(17,GPIO.OUT) #A2
@@ -43,9 +51,13 @@ ppp2.start(0)
 pppp2.start(0)
 #running the motors and changing the LEDs at the same time
 for i in range(10000):
-    p.ChangeDutyCycle((i*0.01)%50)
-    w.ChangeDutyCycle(((i+33)*0.01)%50)
-    m.ChangeDutyCycle(((i+66)*0.01)%50)
+    p.ChangeDutyCycle((i*4)%70)
+    w.ChangeDutyCycle(((i*4+20))%70)
+    m.ChangeDutyCycle(((i*4+40))%70)
+    pp.ChangeDutyCycle((i*4)%70)
+    ww.ChangeDutyCycle(((i*4+20))%70)
+    mm.ChangeDutyCycle(((i*4+40))%70)
+    ppp.ChangeDutyCycle((i*4)%70)
     p1.ChangeDutyCycle(100) #1000
     p2.ChangeDutyCycle(100) #1000
     sleep(0.02)
@@ -77,6 +89,10 @@ for i in range(10000):
 p.stop()
 w.stop()
 m.stop()
+pp.stop()
+ww.stop()
+mm.stop()
+ppp.stop()
 p1.stop()
 pp1.stop()
 ppp1.stop()
