@@ -11,12 +11,15 @@ from picamera import PiCamera
 class globe():
     def __init__(self):
         #globally accessible values to pass them between concurrently running programs
-        self.speed = 100
+        self.speed = 0
         self.camera_snap = False
         self.camera_video = False
+        self.camera_video_working = False
         self.vid = 20
         self.picnum = 0
         self.vidnum = 0
+        self.vidtrack = 0
+        self.running = True
 #instantiating global values
 globy = globe()
 
@@ -145,11 +148,26 @@ p2.start(0)
 pp2.start(0)
 ppp2.start(0)
 pppp2.start(0)
+camera = PiCamera()
+camera.start_preview()
 
 async def speeder():
-    while True:
+    i=0
+    j=0
+    while globy.running:
         if int(globy.speed)>0:
-            sped = 100/int(globy.speed) * 0.02
+            take_photo()
+            #take_video()
+            #if globy.camera_video:
+                #globy.vidtrack = globy.vid
+            if globy.camera_video:
+                vid = '/home/candy/Desktop/video'+str(globy.vidnum)+'.h264'
+                camera.start_recording(vid)
+                globy.vidnum+=1
+                globy.vidtrack = globy.vid
+                globy.camera_video = False
+                globy.camera_video_working = True
+            sped = 100/int(globy.speed) * 0.01
             p.ChangeDutyCycle((i*4)%70)
             w.ChangeDutyCycle(((i*4+20))%70)
             m.ChangeDutyCycle(((i*4+40))%70)
@@ -160,32 +178,88 @@ async def speeder():
             p1.ChangeDutyCycle(100) #1000
             p2.ChangeDutyCycle(100) #1000
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             pp1.ChangeDutyCycle(100) #1100
             pp2.ChangeDutyCycle(100) #1100
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             p1.ChangeDutyCycle(0) #0100
             p2.ChangeDutyCycle(0) #0100
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             ppp1.ChangeDutyCycle(100) #0110
             ppp2.ChangeDutyCycle(100) #0110
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             pp1.ChangeDutyCycle(0) #0010
             pp2.ChangeDutyCycle(0) #0010
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             pppp1.ChangeDutyCycle(100) #0011
             pppp2.ChangeDutyCycle(100) #0011
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             ppp1.ChangeDutyCycle(0) #0001
             ppp2.ChangeDutyCycle(0) #0001
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             p1.ChangeDutyCycle(100) #1001
             p2.ChangeDutyCycle(100) #1001
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             pppp1.ChangeDutyCycle(0) #1000
             pppp2.ChangeDutyCycle(0) #1000
             sleep(sped)
-            await asyncio.sleep(0.1)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
+            i+=1
+            await asyncio.sleep(0)
         elif int(globy.speed) == 0:
+            take_photo()
+            #take_video()
+            #if globy.camera_video:
+                #globy.vidtrack = globy.vid
+            if globy.camera_video:
+                vid = '/home/candy/Desktop/video'+str(globy.vidnum)+'.h264'
+                camera.start_recording(vid)
+                globy.vidnum+=1
+                globy.vidtrack = globy.vid
+                globy.camera_video = False
+                globy.camera_video_working = True
+            p1.ChangeDutyCycle(0)
+            pp1.ChangeDutyCycle(0)
+            ppp1.ChangeDutyCycle(0)
+            pppp1.ChangeDutyCycle(0)
+            p2.ChangeDutyCycle(0)
+            pp2.ChangeDutyCycle(0)
+            ppp2.ChangeDutyCycle(0)
+            pppp2.ChangeDutyCycle(0)
             p.ChangeDutyCycle((i*4)%70)
             w.ChangeDutyCycle(((i*4+20))%70)
             m.ChangeDutyCycle(((i*4+40))%70)
@@ -193,9 +267,26 @@ async def speeder():
             ww.ChangeDutyCycle(((i*4+20))%70)
             mm.ChangeDutyCycle(((i*4+40))%70)
             ppp.ChangeDutyCycle((i*4)%70)
-            await asyncio.sleep(0.1)
+            sleep(0.05)
+            globy.vidtrack-=0.05
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
+            i+=1
+            await asyncio.sleep(0)
         elif int(globy.speed) < 0:
-            sped = -100/int(globy.speed) * 0.02
+            take_photo()
+            #take_video()
+            #if globy.camera_video:
+                #globy.vidtrack = globy.vid
+            if globy.camera_video:
+                vid = '/home/candy/Desktop/video'+str(globy.vidnum)+'.h264'
+                camera.start_recording(vid)
+                globy.vidnum+=1
+                globy.vidtrack = globy.vid
+                globy.camera_video = False
+                globy.camera_video_working = True
+            sped = -100/int(globy.speed) * 0.01
             p.ChangeDutyCycle((i*4)%70)
             w.ChangeDutyCycle(((i*4+20))%70)
             m.ChangeDutyCycle(((i*4+40))%70)
@@ -206,65 +297,93 @@ async def speeder():
             p1.ChangeDutyCycle(100) #1000
             p2.ChangeDutyCycle(100) #1000
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             p1.ChangeDutyCycle(100) #1001
             p2.ChangeDutyCycle(100) #1001
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             ppp1.ChangeDutyCycle(0) #0001
             ppp2.ChangeDutyCycle(0) #0001
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             pppp1.ChangeDutyCycle(100) #0011
             pppp2.ChangeDutyCycle(100) #0011
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             pp1.ChangeDutyCycle(0) #0010
             pp2.ChangeDutyCycle(0) #0010
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             ppp1.ChangeDutyCycle(100) #0110
             ppp2.ChangeDutyCycle(100) #0110
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             p1.ChangeDutyCycle(0) #0100
             p2.ChangeDutyCycle(0) #0100
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             pp1.ChangeDutyCycle(100) #1100
             pp2.ChangeDutyCycle(100) #1100
             sleep(sped)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
             pppp1.ChangeDutyCycle(0) #1000
             pppp2.ChangeDutyCycle(0) #1000
             sleep(sped)
-            await asyncio.sleep(0.1)
+            globy.vidtrack-=sped
+            if globy.vidtrack<=0 and globy.camera_video_working:
+                camera.stop_recording
+                globy.camera_video_working = False
+            i+=1
+            await asyncio.sleep(0)
 
-async def take_photo():
-    while True:
-        if globy.camera_snap:
-                camera = PiCamera()
-                camera.start_preview()
-                img = '/home/candy/Desktop/image'+str(globy.picnum)+'.jpg'
-                camera.capture(img)
-                globy.picnum+=1
-                camera.stop_preview
-                globy.camera_snap = False
-                await asyncio.sleep(0.1)
+def take_photo():
+    if globy.camera_snap:
+            img = '/home/candy/Desktop/image'+str(globy.picnum)+'.jpg'
+            camera.capture(img)
+            globy.picnum+=1
+            globy.camera_snap = False
 
-async def take_video():
-    while True:
-        if globy.camera_video:
-            camera = PiCamera()
-            camera.start_preview()
-            vid = '/home/candy/Desktop/video'+str(globy.vidnum)+'.h264'
-            camera.start_recording(vid)
-            globy.vidnum+=1
-            sleep(globy.vid)
-            camera.stop_recording()
-            camera.stop_preview()
-            await asyncio.sleep(0.1)
-
+def take_video():
+    if globy.camera_video:
+        vid = '/home/candy/Desktop/video'+str(globy.vidnum)+'.h264'
+        camera.start_recording(vid)
+        globy.vidnum+=1
+        globy.vidtrack = globy.vid
+        #sleep(globy.vid)
+        #camera.stop_recording()
+        
 if __name__ == '__main__':
     #async package that contains both concurrent tasks
     async def mainThread():
         app = MyApp()
         a = asyncio.create_task(app.base())
         b = asyncio.create_task(speeder())
-        c = asyncio.create_task(take_photo())
-        d = asyncio.create_task(take_video())
+        #c = asyncio.create_task(take_photo())
+        #c = asyncio.create_task(take_video())
         (done,pending) = await asyncio.wait({a}, return_when='FIRST_COMPLETED')
     #running the concurrent package
     asyncio.run(mainThread())
