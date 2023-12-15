@@ -20,6 +20,7 @@ class globe():
         self.vidnum = 0
         self.vidtrack = 0
         self.running = True
+        self.breath = False
 #instantiating global values
 globy = globe()
 
@@ -156,7 +157,7 @@ camera.start_preview()
 
 async def speeder():
     i=0
-    j=0
+    j=59
     while globy.running:
         if int(globy.speed)>0:
             take_photo()
@@ -168,12 +169,23 @@ async def speeder():
                 globy.camera_video = False
                 globy.camera_video_working = True
             sped = 100/int(globy.speed) * 0.01
-            p.ChangeDutyCycle((i*4)%70)
-            w.ChangeDutyCycle(((i*4+20))%70)
-            m.ChangeDutyCycle(((i*4+40))%70)
-            pp.ChangeDutyCycle((i*4)%70)
-            ww.ChangeDutyCycle(((i*4+20))%70)
-            mm.ChangeDutyCycle(((i*4+40))%70)
+            if globy.breath:
+                p.ChangeDutyCycle((j*4)%60)
+                w.ChangeDutyCycle(((j*4+20))%60)
+                m.ChangeDutyCycle(((j*4+40))%60)
+                pp.ChangeDutyCycle((j*4)%60)
+                ww.ChangeDutyCycle(((j*4+20))%60)
+                mm.ChangeDutyCycle(((j*4+40))%60)
+                ppp.ChangeDutyCycle((j*4)%60)
+                j-=1
+            else:
+                p.ChangeDutyCycle((i*4)%60)
+                w.ChangeDutyCycle(((i*4+20))%60)
+                m.ChangeDutyCycle(((i*4+40))%60)
+                pp.ChangeDutyCycle((i*4)%60)
+                ww.ChangeDutyCycle(((i*4+20))%60)
+                mm.ChangeDutyCycle(((i*4+40))%60)
+                ppp.ChangeDutyCycle((i*4)%60)
             ppp.ChangeDutyCycle((i*4)%70)
             p1.ChangeDutyCycle(100) #1000
             p2.ChangeDutyCycle(100) #1000
@@ -239,6 +251,11 @@ async def speeder():
             if globy.vidtrack<=0 and globy.camera_video_working:
                 camera.stop_recording()
                 globy.camera_video_working = False
+            if j==0:
+                globy.breath = False
+                j=59
+            if (i*4)%60==0:
+                globy.breath = True
             i+=1
             await asyncio.sleep(0)
         elif int(globy.speed) == 0:
@@ -258,18 +275,33 @@ async def speeder():
             pp2.ChangeDutyCycle(0)
             ppp2.ChangeDutyCycle(0)
             pppp2.ChangeDutyCycle(0)
-            p.ChangeDutyCycle((i*4)%70)
-            w.ChangeDutyCycle(((i*4+20))%70)
-            m.ChangeDutyCycle(((i*4+40))%70)
-            pp.ChangeDutyCycle((i*4)%70)
-            ww.ChangeDutyCycle(((i*4+20))%70)
-            mm.ChangeDutyCycle(((i*4+40))%70)
-            ppp.ChangeDutyCycle((i*4)%70)
-            sleep(0.05)
+            if globy.breath:
+                p.ChangeDutyCycle((j*4)%60)
+                w.ChangeDutyCycle(((j*4+20))%60)
+                m.ChangeDutyCycle(((j*4+40))%60)
+                pp.ChangeDutyCycle((j*4)%60)
+                ww.ChangeDutyCycle(((j*4+20))%60)
+                mm.ChangeDutyCycle(((j*4+40))%60)
+                ppp.ChangeDutyCycle((j*4)%60)
+                j-=1
+            else:
+                p.ChangeDutyCycle((i*4)%60)
+                w.ChangeDutyCycle(((i*4+20))%60)
+                m.ChangeDutyCycle(((i*4+40))%60)
+                pp.ChangeDutyCycle((i*4)%60)
+                ww.ChangeDutyCycle(((i*4+20))%60)
+                mm.ChangeDutyCycle(((i*4+40))%60)
+                ppp.ChangeDutyCycle((i*4)%60)
+            sleep(0.1)
             globy.vidtrack-=0.05
             if globy.vidtrack<=0 and globy.camera_video_working:
                 camera.stop_recording()
                 globy.camera_video_working = False
+            if j==0:
+                globy.breath = False
+                j=59
+            if (i*4)%60==0:
+                globy.breath = True
             i+=1
             await asyncio.sleep(0)
         elif int(globy.speed) < 0:
@@ -282,13 +314,23 @@ async def speeder():
                 globy.camera_video = False
                 globy.camera_video_working = True
             sped = -100/int(globy.speed) * 0.01
-            p.ChangeDutyCycle((i*4)%70)
-            w.ChangeDutyCycle(((i*4+20))%70)
-            m.ChangeDutyCycle(((i*4+40))%70)
-            pp.ChangeDutyCycle((i*4)%70)
-            ww.ChangeDutyCycle(((i*4+20))%70)
-            mm.ChangeDutyCycle(((i*4+40))%70)
-            ppp.ChangeDutyCycle((i*4)%70)
+            if globy.breath:
+                p.ChangeDutyCycle((j*4)%60)
+                w.ChangeDutyCycle(((j*4+20))%60)
+                m.ChangeDutyCycle(((j*4+40))%60)
+                pp.ChangeDutyCycle((j*4)%60)
+                ww.ChangeDutyCycle(((j*4+20))%60)
+                mm.ChangeDutyCycle(((j*4+40))%60)
+                ppp.ChangeDutyCycle((j*4)%60)
+                j-=1
+            else:
+                p.ChangeDutyCycle((i*4)%60)
+                w.ChangeDutyCycle(((i*4+20))%60)
+                m.ChangeDutyCycle(((i*4+40))%60)
+                pp.ChangeDutyCycle((i*4)%60)
+                ww.ChangeDutyCycle(((i*4+20))%60)
+                mm.ChangeDutyCycle(((i*4+40))%60)
+                ppp.ChangeDutyCycle((i*4)%60)
             p1.ChangeDutyCycle(100) #1000
             p2.ChangeDutyCycle(100) #1000
             sleep(sped)
@@ -352,6 +394,11 @@ async def speeder():
             if globy.vidtrack<=0 and globy.camera_video_working:
                 camera.stop_recording()
                 globy.camera_video_working = False
+            if j==0:
+                globy.breath = False
+                j=59
+            if (i*4)%60==0:
+                globy.breath = True
             i+=1
             await asyncio.sleep(0)
 
