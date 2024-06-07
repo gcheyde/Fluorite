@@ -1,0 +1,1 @@
+Fluorite is a electronic kaleidoscope controlled by a Raspberry Pi featuring an adjustable mirror movement speed, flashing lights, and the ability to take pictures or videos - all controlled via a simple-to-use GUI.
